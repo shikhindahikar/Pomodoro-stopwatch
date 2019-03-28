@@ -20,11 +20,13 @@ public class StopWatchDesign extends javax.swing.JFrame {
     static int hours=0;
     static int mins=0;
     static int secs=0;
+    int once=0;
     static  boolean flag=true;
     public StopWatchDesign() {
         initComponents();
     }
     public void delay(){
+        StopWatchDesign.infoBox("It is time to take a 5 minutes break\n", "BREAK TIME" );
         int i=0,j=0,f=1;
         while(f==1){
             try {
@@ -42,7 +44,11 @@ public class StopWatchDesign extends javax.swing.JFrame {
             }
         }
     }
-
+    
+    public static void infoBox(String infoMessage, String titleBar)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,7 +135,7 @@ public class StopWatchDesign extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("CANCEL");
+        jButton3.setText("STOP");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -190,12 +196,13 @@ public class StopWatchDesign extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Thread t;
-        // TODO add your handling code here:
+        once++;// TODO add your handling code here:
         flag=true;
         t = new Thread(){
             @Override
             public void run(){
-                while(true){
+                if(once==1){
+                    while(true){
                     if(flag==true){
                         try {
                             sleep(1000);
@@ -204,8 +211,9 @@ public class StopWatchDesign extends javax.swing.JFrame {
                                 secs=0;
                                 mins++;
                             }
-                            if(mins == 25){
+                            if(mins == 25){      //25 minutes work
                                 delay();
+                                StopWatchDesign.infoBox("Break time over get back to work!", "WORK!WORK!WORK!");
                             }
                             if(mins>59){
                                 mins=0;
@@ -239,6 +247,7 @@ public class StopWatchDesign extends javax.swing.JFrame {
                     else{
                         break;
                     }
+                }
                 }
             }
         };
